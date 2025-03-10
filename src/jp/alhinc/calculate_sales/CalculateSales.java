@@ -36,7 +36,25 @@ public class CalculateSales {
 			return;
 		}
 
+		String ファイルのパス;
 		// ※ここから集計処理を作成してください。(処理内容2-1、2-2)
+		//listFilesを使用してfilesという配列に、
+		//指定したパスに存在する全てのファイル(または、ディレクトリ)の情報を格納します。
+		File[] files = new File(ファイルのパス).listFiles();
+
+		//filesの数だけ繰り返すことで、
+		//指定したパスに存在する全てのファイル(または、ディレクトリ)の数だけ繰り返されます。
+		for(int i = 0; i < files.length ; i++) {
+			//files[i].getName() でファイル名が取得できます。
+
+			//matches を使用してファイル名が「数字8桁.rcd」なのか判定します。
+			String ファイル名;
+			String 正規表現構文;
+			if(ファイル名.matches(正規表現構文)) {
+			    //trueの場合の処理
+			}else {
+			}
+
 
 
 
@@ -68,8 +86,17 @@ public class CalculateSales {
 			// 一行ずつ読み込む
 			while((line = br.readLine()) != null) {
 				// ※ここの読み込み処理を変更してください。(処理内容1-2)
-				System.out.println(line);
+
+				//spritを使って「,」（カンマ）で分割すると、
+				//item[0]には支店コード、item[1]には支店名が格納される
+				String[]item=line.split(",");
 			}
+				//Mapに追加する2つの情報をputの引数として指定します。
+				  String[] 支店コード;
+				String 支店名;
+				branchNames.put(支店コード,支店名);
+				branchSales.put(支店コード,0);
+
 
 		} catch(IOException e) {
 			System.out.println(UNKNOWN_ERROR);
