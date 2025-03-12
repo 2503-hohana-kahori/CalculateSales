@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CalculateSales {
@@ -38,50 +40,62 @@ public class CalculateSales {
 	    }
 
 
-//		String ファイルのパス = null;
-//		// ※ここから集計処理を作成してください。(処理内容2-1、2-2)
-//		//listFilesを使用してfilesという配列に、
-//		//指定したパスに存在する全てのファイル(または、ディレクトリ)の情報を格納します。
-//		File[] files = new File(ファイルのパス).listFiles();
+		// ※ここから集計処理を作成してください。(処理内容2-1、2-2)
+		//listFilesを使用してfilesという配列に、
+		//指定したパスに存在する全てのファイル(または、ディレクトリ)の情報を格納します。
+ 		File[] files = new File(args[0]).listFiles();
+		//filesの数だけ繰り返すことで、
+		//指定したパスに存在する全てのファイル(または、ディレクトリ)の数だけ繰り返されます。
+
+ 		List<File> rcdFiles = new ArrayList<>();
+		for(int i = 0; i < files.length ; i++) {
+			//files[i].getName() でファイル名が取得できます
+			String fileName =files[i].getName();
+
+			//ファイルの条件にあてはまるものだけ判定する文が必要
+			//matches を使用してファイル名が「数字8桁.rcd」なのか判定します。
+
+			if(fileName.matches("[0-9]{8}[.]rcd")) {
+
+			}   //rcdファイルに判別したファイルの中身を追加する。(trueの場合）
+			rcdFiles.add(files[i]);
+		}
+
+		//rcdFilesに複数の売上ファイルの情報を格納しているので、その数だけ繰り返します。
+		for(int i = 0; i < rcdFiles.size(); i++) {
+			BufferedReader br = null;
+			File rcdFile = new File(,);
+			FileReader fr = new FileReader(file);
+			br = new BufferedReader(fr);
+			//売り上げリストの名前を新たに宣言する
+			String line;
+			//支店定義ファイル読み込み(readFileメソッド)を参考に売上ファイルの中身を読み込みます。
+
+			while((line = br.readLine()) != null) {
+			//売上ファイルのList,1行目には支店コード、2行目には売上金額が入っています。カンマなし
+				String[] items = line.split("");
+			}
+		}
+
+
+
+//			//売上ファイルから読み込んだ売上金額をMapに加算していくために、型の変換を行います。
+//		long fileSale = Long.parseLong(売上金額);
 //
+//	//		//読み込んだ売上金額を加算します。
+//	//		//※詳細は後述で説明
+//			Long saleAmount = 売上金額を⼊れたMap.get(⽀店コード) + long に変換した売上⾦額;
 //
-//		//filesの数だけ繰り返すことで、
-//		//指定したパスに存在する全てのファイル(または、ディレクトリ)の数だけ繰り返されます。
-//		for(int i = 0; i < files.length ; i++) {
-//			//files[i].getName() でファイル名が取得できます。
+//			//加算した売上⾦額をMapに追加します。
+//
 //		}
-//
-//			//matches を使用してファイル名が「数字8桁.rcd」なのか判定します。
-//			String ファイル名 = null;
-//			String 正規表現構文 = null;
-//			if(ファイル名.matches(正規表現構文)) {
-//			    //trueの場合の処理
-//			}else {
-//
-//			}
-//
-//            //List(ArrayList)に値を保持する
-//			File[] files1 = new File(ファイルのパス).listFiles();
-//           //先にファイルの情報を格納する List(ArrayList) を宣言します。
-//		    List<File> rcdFiles = new ArrayList<>();
-//
-//		    for(int i1= 0; i1 < files1.length ; i1++) {
-//			   if(ファイル名.matches(正規表現構文)) {
-//		            //売上ファイルの条件に当てはまったものだけ、List(ArrayList) に追加します。
-//				rcdFiles.add(files1[i1]);
-//			   }
-//		    }
-//
-//		  //rcdFilesに複数の売上ファイルの情報を格納しているので、その数だけ繰り返します。
-//		    for(int i = 0; i < rcdFiles.size(); i++) {
-//
-//		    	String 売上金額 = null;
-//				String 支店コード= null;
-//		    	String line;
-//		    	BufferedReader br = null;
-//		    	while((line =br.readLine()) != null) {
-//
-//		    	//売上ファイルの1行目には支店コード、2行目には売上金額が入っています。
+
+	    	//String 売上金額 = null;
+				//String 支店コード= null;
+		    //	String line;
+		    //	BufferedReader br = null;
+		   // 	while((line =b[i]r.readLine()) != null) {
+
 //
 //		    	//売上ファイルから読み込んだ売上金額をMapに加算していくために、型の変換を行います。
 //		    	long fileSale = Long.parseLong(売上金額);
@@ -134,15 +148,16 @@ public class CalculateSales {
 
 					//spritを使って「,」（カンマ）で分割すると、
 					//item[0]には支店コード、item[1]には支店名が格納される
-					@SuppressWarnings("unused")
-					String[]item=line.split(",");
+					String[] items = line.split(",");
+
+					//Mapに追加する2つの情報をputの引数として指定します。
+					//Mapの値の保持
+					String code = items[0];
+					String name = items[1];
+					branchNames.put(code,name);
+					branchSales.put(code,(long) 0);
 				}
-				//Mapに追加する2つの情報をputの引数として指定します。
-				//Mapの値の保持
-				String 支店コード = null;
-				String 支店名 = null;
-				branchNames.put(支店コード,支店名);
-				branchSales.put(支店コード,(long) 0);
+
 
 				//エラー
 			} catch(IOException e) {
