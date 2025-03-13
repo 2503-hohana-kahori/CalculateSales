@@ -46,49 +46,65 @@ public class CalculateSales {
  		File[] files = new File(args[0]).listFiles();
 		//filesの数だけ繰り返すことで、
 		//指定したパスに存在する全てのファイル(または、ディレクトリ)の数だけ繰り返されます。
+       //今まで出てこなかったものをここで宣言して使えるようにする。
 
  		List<File> rcdFiles = new ArrayList<>();
+
+
 		for(int i = 0; i < files.length ; i++) {
 			//files[i].getName() でファイル名が取得できます
 			String fileName =files[i].getName();
+
 
 			//ファイルの条件にあてはまるものだけ判定する文が必要
 			//matches を使用してファイル名が「数字8桁.rcd」なのか判定します。
 
 			if(fileName.matches("[0-9]{8}[.]rcd")) {
-
+				rcdFiles.add(files[i]);
 			}   //rcdファイルに判別したファイルの中身を追加する。(trueの場合）
-			rcdFiles.add(files[i]);
 		}
 
 		//rcdFilesに複数の売上ファイルの情報を格納しているので、その数だけ繰り返します。
 		for(int i = 0; i < rcdFiles.size(); i++) {
-			BufferedReader br = null;
-			File rcdFile = new File(,);
-			FileReader fr = new FileReader(file);
-			br = new BufferedReader(fr);
-			//売り上げリストの名前を新たに宣言する
-			String line;
-			//支店定義ファイル読み込み(readFileメソッド)を参考に売上ファイルの中身を読み込みます。
 
-			while((line = br.readLine()) != null) {
-			//売上ファイルのList,1行目には支店コード、2行目には売上金額が入っています。カンマなし
-				String[] items = line.split("");
-			}
+			//宣言に使う名前の取得2-1参考
+			//files[i].getName() でファイル名が取得できます。
+			String fileName =rcdFiles.get(i).getName();
+			//判別したファイルをファイルreaderに移すそれをbufferに移動して保持
+			try {
+				//ファイルをファイルreaderに移すそれをbufferに移動して保持
+				BufferedReader br = null;
+				File file = new  File (args[0], fileName);
+				FileReader fr = new FileReader(file);
+
+				br = new BufferedReader(fr);
+
+
+				//売り上げリストの名前を新たに宣言する
+				String line ;
+				//支店定義ファイル読み込み(readFileメソッド)を参考に売上ファイルの中身を読み込みます。
+				while((line = br.readLine()) != null) {
+					//売上ファイルのList,1行目には支店コード、2行目には売上金額が入っています。カンマなし
+					String list  []  = line.split("");
+				}
+
+
+				//売上ファイルから読み込んだ売上金額をMapに加算していくために、型の変換を行います。
+	        	long fileSale = Long.parseLong(line);
+
+				//読み込んだ売上金額を加算します。
+	         	//ファイルから読み込んだ情報は、内容にかかわらず一律で文字列(String) として扱う(このための宣言必要）
+	         	//売上ファイルの売上金額はLongとして扱う(このための宣言必要）
+	         	String code = list[0];
+
+				String salse =list[1];
+
+			//	Long saleAmount = 売上金額を入れたMap.get(支店コード) + long に変換した売上金額;
+
+				//加算した売上⾦額をMapに追加します
+
 		}
 
-
-
-//			//売上ファイルから読み込んだ売上金額をMapに加算していくために、型の変換を行います。
-//		long fileSale = Long.parseLong(売上金額);
-//
-//	//		//読み込んだ売上金額を加算します。
-//	//		//※詳細は後述で説明
-//			Long saleAmount = 売上金額を⼊れたMap.get(⽀店コード) + long に変換した売上⾦額;
-//
-//			//加算した売上⾦額をMapに追加します。
-//
-//		}
 
 	    	//String 売上金額 = null;
 				//String 支店コード= null;
@@ -117,11 +133,22 @@ public class CalculateSales {
 
 
 
-		    // 支店別集計ファイル書き込み処理
-		    if(!writeFile(args[0], FILE_NAME_BRANCH_OUT, branchNames, branchSales)) {
-		    	return;
-		    }
+//		    // 支店別集計ファイル書き込み処理
+//		    if(!private static Object fileName() {
+//		    }
+//		// TODO 自動生成されたメソッド・スタブ
+//		return null;
+//	}
+//
+//			writeFile(args[0], FILE_NAME_BRANCH_OUT, branchNames, branchSales)){
+//		    	return;
+//		    }
 
+
+
+	private static Object fileName() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
 	}
 
 	/**
@@ -137,6 +164,7 @@ public class CalculateSales {
 			BufferedReader br = null;
 
 			try {
+				//ファイルをファイルreaderに移すそれをbufferに移動して保持
 				File file = new File(path, fileName);
 				FileReader fr = new FileReader(file);
 				br = new BufferedReader(fr);
