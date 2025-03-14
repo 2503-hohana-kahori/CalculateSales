@@ -1,6 +1,7 @@
 package jp.alhinc.calculate_sales;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class CalculateSales {
 		// 支店コードと売上金額を保持するMap
 		Map<String, Long> branchSales = new HashMap<>();
 
+
 		 //支店定義ファイルの読み込み処理
 	    if(!readFile(args[0], FILE_NAME_BRANCH_LST, branchNames,branchSales)) {
 	    	return ;
@@ -56,100 +58,68 @@ public class CalculateSales {
 			String fileName =files[i].getName();
 
 
-			//ファイルの条件にあてはまるものだけ判定する文が必要
-			//matches を使用してファイル名が「数字8桁.rcd」なのか判定します。
-
-			if(fileName.matches("[0-9]{8}[.]rcd")) {
+			//ファイルの条件にあてはまるものだけ判定する文
+			//ファイル名が「数字8桁.rcd」なのが条件で判定する
+			//条件にあっているものをmatchを使用して探す
+			if(fileName.matches("[0-9]{8}[.]rcd")) { //rcdファイルに判別したファイルの中身を追加する。(trueの場合）
 				rcdFiles.add(files[i]);
-			}   //rcdファイルに判別したファイルの中身を追加する。(trueの場合）
+			}
 		}
-
+		String fileName = "";
+		BufferedReader br = null;
 		//rcdFilesに複数の売上ファイルの情報を格納しているので、その数だけ繰り返します。
 		for(int i = 0; i < rcdFiles.size(); i++) {
 
-			//宣言に使う名前の取得2-1参考
+
 			//files[i].getName() でファイル名が取得できます。
-			String fileName =rcdFiles.get(i).getName();
+	     	 //String fileName =rcdFiles.get(i).getName();でファイル名を取得できる
+			 fileName =rcdFiles.get(i).getName();
+		}
+
 			//判別したファイルをファイルreaderに移すそれをbufferに移動して保持
 			try {
-				//ファイルをファイルreaderに移すそれをbufferに移動して保持
-				BufferedReader br = null;
+
+
 				File file = new  File (args[0], fileName);
 				FileReader fr = new FileReader(file);
-
 				br = new BufferedReader(fr);
 
 
-				//売り上げリストの名前を新たに宣言する
-				String line ;
-				//支店定義ファイル読み込み(readFileメソッド)を参考に売上ファイルの中身を読み込みます。
-				while((line = br.readLine()) != null) {
-					//売上ファイルのList,1行目には支店コード、2行目には売上金額が入っています。カンマなし
-					String list  []  = line.split("");
-				}
-
+				//売り上げリストの名前を新たに宣言する(line,list,code,salse)
+				String line =  br.readLine();
+				//売上ファイルのList,1行目には支店コード、2行目には売上金額が入っています。カンマなし
+				String list  []  = line.split("");
+				//Mapに二つの項目をいれるための宣言
+				String code = list[0];
+				String salse =list[1];
+				String.valueOf(salse);
 
 				//売上ファイルから読み込んだ売上金額をMapに加算していくために、型の変換を行います。
-	        	long fileSale = Long.parseLong(line);
-
+				long fileSalse = Long.parseLong(salse);
 				//読み込んだ売上金額を加算します。
-	         	//ファイルから読み込んだ情報は、内容にかかわらず一律で文字列(String) として扱う(このための宣言必要）
-	         	//売上ファイルの売上金額はLongとして扱う(このための宣言必要）
-	         	String code = list[0];
+				//Map(HashMap)から値を取得する
+				Long saleAmount = branchSales .get(code) + fileSalse;
 
-				String salse =list[1];
+				//加算した売上⾦額をMapに追加します。
 
-			//	Long saleAmount = 売上金額を入れたMap.get(支店コード) + long に変換した売上金額;
+			} catch(IOException e) {
+		      System.out.println(UNKNOWN_ERROR);
 
-				//加算した売上⾦額をMapに追加します
+	        } finally {
+		     // ファイルを開いている場合
+	        	if(br != null) {
+						// ファイルを閉じる
+				   	try {
+						br.close();
+					} catch (IOException e) {
+						// TODO 自動生成された catch ブロック
+						e.printStackTrace();
+					}
+	        	}
 
-		}
-
-
-	    	//String 売上金額 = null;
-				//String 支店コード= null;
-		    //	String line;
-		    //	BufferedReader br = null;
-		   // 	while((line =b[i]r.readLine()) != null) {
-
-//
-//		    	//売上ファイルから読み込んだ売上金額をMapに加算していくために、型の変換を行います。
-//		    	long fileSale = Long.parseLong(売上金額);
-//
-//		    	//読み込んだ売上金額を加算します。
-//		    	int longに変換した売上金額;
-//
-//		    	//Longとして扱うため、Mapに追加するためには型を変換
-//		    	long fileSale1 = Long.parseLong(売上金額);
-//
-//				Map<String, String> 売上金額を入れたMap;
-//				String saleAmount = 売上金額を入れたMap.get(支店コード) +  longに変換した売上金額;
-//
-//		    	//加算した売上金額をMapに追加します。
-//				Long  saleAmount1= 売上金額を入れたMap.get(支店コード) + long に変換した売上金額;
-//		    	}
-//
-
-
-
-
-//		    // 支店別集計ファイル書き込み処理
-//		    if(!private static Object fileName() {
-//		    }
-//		// TODO 自動生成されたメソッド・スタブ
-//		return null;
-//	}
-//
-//			writeFile(args[0], FILE_NAME_BRANCH_OUT, branchNames, branchSales)){
-//		    	return;
-//		    }
-
-
-
-	private static Object fileName() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		    }
 	}
+
 
 	/**
 	 * 支店定義ファイル読み込み処理
@@ -203,11 +173,6 @@ public class CalculateSales {
 					}
 
 				}
-//				//ファイルの存在を確認する方法
-//				File file = new File(ファイルのパス, ファイルの名前);
-//				if(!file.exists()) {
-//					//⽀店定義ファイルが存在しない場合、コンソールにエラーメッセージを表⽰します。
-//				}
 			}
 			return true;
 		}
@@ -224,36 +189,10 @@ public class CalculateSales {
 	private static boolean writeFile(String path, String fileName, Map<String, String> branchNames, Map<String, Long> branchSales) {
 		// ※ここに書き込み処理を作成してください。(処理内容3-1)
 
-//		try {
-//			//書き込む処理
-//			file.close();
-//
-//			for (String key : 支店コードを入れたMap.keySet()) {
-//				//keyという変数には、Mapから取得したキーが代入されています。
-//				//拡張for文で繰り返されているので、1つ⽬のキーが取得できたら、
-//				//2つ目の取得...といったように、次々とkeyという変数に上書きされていきます。
-//			}
-//
-//			//改行方法
-//			bw.newLine();
-//
-//
-//		} catch(IOException e) {
-//			System.out.println(UNKNOWN_ERROR);
-//			return false;
-//		}finally {
-//			// ファイルを開いている場合
-//			if(file != null) {
-//				try {
-//					// ファイルを閉じる
-//					file.close();
-//				} catch(IOException e) {
-//					System.out.println(UNKNOWN_ERROR);
-//					return false;
-//				}
-//				return true;
-//			}
-//		}
-		return true;
-	}
-}
+		//BufferWriterを作成することを宣言
+		//BufferWriterに出力するために、brの内容をFileWriterに書き込んでから移動する
+		//FileWriterのためのファイル作成も行う。
+		BufferedWriter br = null;
+
+
+
